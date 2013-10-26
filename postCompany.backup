@@ -1,0 +1,498 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.2.5
+-- Dumped by pg_dump version 9.2.5
+-- Started on 2013-10-26 19:51:43
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 2000 (class 1262 OID 12002)
+-- Dependencies: 1999
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- TOC entry 179 (class 3079 OID 11727)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2003 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 178 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2004 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 173 (class 1259 OID 16436)
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE customer (
+    customer_id numeric NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 16491)
+-- Name: customerservices; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE customerservices (
+    customerservices_id numeric NOT NULL,
+    customer_id numeric,
+    service_id numeric,
+    parententity numeric
+);
+
+
+ALTER TABLE public.customerservices OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 16432)
+-- Name: dummytable; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW dummytable AS
+    SELECT ''::character varying(100) AS dummy;
+
+
+ALTER TABLE public.dummytable OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 16393)
+-- Name: mtd_entities; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE mtd_entities (
+    mdent_id character varying(200) NOT NULL,
+    mdent_name character varying(200),
+    mdent_type numeric NOT NULL,
+    mdent_content_txt text,
+    mdent_parent_id character varying(200),
+    mdent_order double precision,
+    mdent_content_txt_size numeric,
+    mdent_content_txt_crc32 numeric
+);
+
+
+ALTER TABLE public.mtd_entities OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 16416)
+-- Name: mtd_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE mtd_groups (
+    usr_name character varying(200) NOT NULL,
+    group_name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE public.mtd_groups OWNER TO postgres;
+
+--
+-- TOC entry 169 (class 1259 OID 16408)
+-- Name: mtd_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE mtd_users (
+    usr_name character varying(200) NOT NULL,
+    usr_passwd character varying(200),
+    usr_form character varying(200),
+    usr_context character varying(200),
+    usr_roles character varying(200),
+    usr_phone character varying(200),
+    usr_email character varying(200)
+);
+
+
+ALTER TABLE public.mtd_users OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 16424)
+-- Name: mtd_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE mtd_version (
+    version_value numeric NOT NULL
+);
+
+
+ALTER TABLE public.mtd_version OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 16460)
+-- Name: period; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE period (
+    period_id numeric NOT NULL,
+    start_date date,
+    end_date date
+);
+
+
+ALTER TABLE public.period OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 16444)
+-- Name: report; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE report (
+    report_id numeric NOT NULL,
+    customer_id numeric,
+    quantity numeric,
+    price_for_uinit numeric,
+    received numeric,
+    closed boolean,
+    service_id numeric,
+    period_id numeric
+);
+
+
+ALTER TABLE public.report OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 16452)
+-- Name: service; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE service (
+    service_id numeric NOT NULL,
+    name character varying(100),
+    unit_name character varying(100)
+);
+
+
+ALTER TABLE public.service OWNER TO postgres;
+
+--
+-- TOC entry 1990 (class 0 OID 16436)
+-- Dependencies: 173
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY customer (customer_id, name) FROM stdin;
+138158639930851	customer1
+138158641955360	customer3
+138158641202645	customer2
+138168369134127	my customer
+\.
+
+
+--
+-- TOC entry 1994 (class 0 OID 16491)
+-- Dependencies: 177
+-- Data for Name: customerservices; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY customerservices (customerservices_id, customer_id, service_id, parententity) FROM stdin;
+138158794247967	138158639930851	138158628571150	\N
+138167922811671	138158641955360	138158634412616	\N
+138167928560462	138158641955360	138158634429954	\N
+138167930863596	138158641202645	138158628571150	\N
+138167932597976	138158641202645	138158634429954	\N
+138168233370482	138158639930851	138158634412616	\N
+138168233412095	138158639930851	138158634429954	\N
+\.
+
+
+--
+-- TOC entry 1986 (class 0 OID 16393)
+-- Dependencies: 168
+-- Data for Name: mtd_entities; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY mtd_entities (mdent_id, mdent_name, mdent_type, mdent_content_txt, mdent_parent_id, mdent_order, mdent_content_txt_size, mdent_content_txt_crc32) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1988 (class 0 OID 16416)
+-- Dependencies: 170
+-- Data for Name: mtd_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY mtd_groups (usr_name, group_name) FROM stdin;
+admin	admin
+\.
+
+
+--
+-- TOC entry 1987 (class 0 OID 16408)
+-- Dependencies: 169
+-- Data for Name: mtd_users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY mtd_users (usr_name, usr_passwd, usr_form, usr_context, usr_roles, usr_phone, usr_email) FROM stdin;
+admin	abe6db4c9f5484fae8d79f2e868a673c	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 1989 (class 0 OID 16424)
+-- Dependencies: 171
+-- Data for Name: mtd_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY mtd_version (version_value) FROM stdin;
+2
+\.
+
+
+--
+-- TOC entry 1993 (class 0 OID 16460)
+-- Dependencies: 176
+-- Data for Name: period; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY period (period_id, start_date, end_date) FROM stdin;
+138158644527362	2013-10-13	2013-11-13
+138158647034396	2013-11-13	2013-12-13
+138158649150866	2013-12-13	2014-01-13
+138168364628839	2013-07-13	2013-08-13
+\.
+
+
+--
+-- TOC entry 1991 (class 0 OID 16444)
+-- Dependencies: 174
+-- Data for Name: report; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY report (report_id, customer_id, quantity, price_for_uinit, received, closed, service_id, period_id) FROM stdin;
+138158656351417	138158639930851	4334	223	232	f	138158634412616	138158647034396
+138158949459833	138158641955360	3343	33	21	f	138158634429954	138158647034396
+138168143148144	138158639930851	22	2	222	f	138158634412616	138158644527362
+138158949515570	138158641202645	233	333	333	f	138158628571150	138158649150866
+\.
+
+
+--
+-- TOC entry 1992 (class 0 OID 16452)
+-- Dependencies: 175
+-- Data for Name: service; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY service (service_id, name, unit_name) FROM stdin;
+138158628571150	service1	name1
+138158634412616	service2	name2
+138158634429954	service3	name3
+138168354977390	New service	metr
+\.
+
+
+--
+-- TOC entry 1862 (class 2606 OID 16469)
+-- Name: customer_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT customer_pk PRIMARY KEY (customer_id);
+
+
+--
+-- TOC entry 1870 (class 2606 OID 16498)
+-- Name: customerservices_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY customerservices
+    ADD CONSTRAINT customerservices_pk PRIMARY KEY (customerservices_id);
+
+
+--
+-- TOC entry 1854 (class 2606 OID 16400)
+-- Name: mtd_entities_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY mtd_entities
+    ADD CONSTRAINT mtd_entities_pk PRIMARY KEY (mdent_id);
+
+
+--
+-- TOC entry 1856 (class 2606 OID 16402)
+-- Name: mtd_names_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY mtd_entities
+    ADD CONSTRAINT mtd_names_unique UNIQUE (mdent_parent_id, mdent_name);
+
+
+--
+-- TOC entry 1858 (class 2606 OID 16415)
+-- Name: mtd_users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY mtd_users
+    ADD CONSTRAINT mtd_users_pk PRIMARY KEY (usr_name);
+
+
+--
+-- TOC entry 1860 (class 2606 OID 16431)
+-- Name: mtd_version_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY mtd_version
+    ADD CONSTRAINT mtd_version_pk PRIMARY KEY (version_value);
+
+
+--
+-- TOC entry 1868 (class 2606 OID 16475)
+-- Name: period_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY period
+    ADD CONSTRAINT period_pk PRIMARY KEY (period_id);
+
+
+--
+-- TOC entry 1864 (class 2606 OID 16471)
+-- Name: report_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY report
+    ADD CONSTRAINT report_pk PRIMARY KEY (report_id);
+
+
+--
+-- TOC entry 1866 (class 2606 OID 16473)
+-- Name: service_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY service
+    ADD CONSTRAINT service_pk PRIMARY KEY (service_id);
+
+
+--
+-- TOC entry 1873 (class 2606 OID 16481)
+-- Name: fk_138051588113558; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY report
+    ADD CONSTRAINT fk_138051588113558 FOREIGN KEY (period_id) REFERENCES period(period_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1876 (class 2606 OID 16504)
+-- Name: fk_138158681897302; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY customerservices
+    ADD CONSTRAINT fk_138158681897302 FOREIGN KEY (service_id) REFERENCES service(service_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1874 (class 2606 OID 16529)
+-- Name: fk_138159309044493; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY report
+    ADD CONSTRAINT fk_138159309044493 FOREIGN KEY (service_id) REFERENCES service(service_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1877 (class 2606 OID 16539)
+-- Name: fk_138159977756021; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY customerservices
+    ADD CONSTRAINT fk_138159977756021 FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1875 (class 2606 OID 16544)
+-- Name: fk_138159978071328; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY report
+    ADD CONSTRAINT fk_138159978071328 FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1878 (class 2606 OID 16643)
+-- Name: fk_138268535852664; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY customerservices
+    ADD CONSTRAINT fk_138268535852664 FOREIGN KEY (parententity) REFERENCES customerservices(customerservices_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1871 (class 2606 OID 16403)
+-- Name: mtd_entities_fk61240574157171; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mtd_entities
+    ADD CONSTRAINT mtd_entities_fk61240574157171 FOREIGN KEY (mdent_parent_id) REFERENCES mtd_entities(mdent_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 1872 (class 2606 OID 16419)
+-- Name: mtd_groups_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mtd_groups
+    ADD CONSTRAINT mtd_groups_users_fk FOREIGN KEY (usr_name) REFERENCES mtd_users(usr_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2002 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2013-10-26 19:51:44
+
+--
+-- PostgreSQL database dump complete
+--
+
